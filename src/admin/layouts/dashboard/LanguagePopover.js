@@ -68,9 +68,7 @@ export default function LanguagePopover() {
               <ListItemIcon>
                 <Box component="img" alt={option.label} src={option.icon} />
               </ListItemIcon>
-              <ListItemText primaryTypographyProps={{ variant: 'body2' }}>
-                {option.label}
-              </ListItemText>
+              <ListItemText primaryTypographyProps={{ variant: 'body2' }}>{option.label}</ListItemText>
             </MenuItem>
           ))}
         </Box>

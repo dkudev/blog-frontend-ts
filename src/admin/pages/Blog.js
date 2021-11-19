@@ -27,12 +27,7 @@ export default function Blog() {
           <Typography variant="h4" gutterBottom>
             Blog
           </Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to="#"
-            startIcon={<Icon icon={plusFill} />}
-          >
+          <Button variant="contained" component={RouterLink} to="#" startIcon={<Icon icon={plusFill} />}>
             New Post
           </Button>
         </Stack>

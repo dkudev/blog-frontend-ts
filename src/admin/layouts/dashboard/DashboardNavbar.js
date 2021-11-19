@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
+import { useAuth0 } from '@auth0/auth0-react';
 // material
 import { alpha, styled } from '@mui/material/styles';
-import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
+import { Box, Stack, AppBar, Toolbar, IconButton, Button } from '@mui/material';
 // components
 import { MHidden } from '../../components/@material-extend';
 //
@@ -43,6 +44,8 @@ DashboardNavbar.propTypes = {
 };
 
 export default function DashboardNavbar({ onOpenSidebar }) {
+  const auth = useAuth0();
+  const { isAuthenticated, loginWithPopup } = auth;
   return (
     <RootStyle>
       <ToolbarStyle>
@@ -57,8 +60,17 @@ export default function DashboardNavbar({ onOpenSidebar }) {
 
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
           <LanguagePopover />
-          <NotificationsPopover />
-          <AccountPopover />
+          {!isAuthenticated && (
+            <Button variant="outlined" onClick={() => loginWithPopup()}>
+              Login
+            </Button>
+          )}
+          {isAuthenticated && (
+            <>
+              <NotificationsPopover />
+              <AccountPopover />
+            </>
+          )}
         </Stack>
       </ToolbarStyle>
     </RootStyle>

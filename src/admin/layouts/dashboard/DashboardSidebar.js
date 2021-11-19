@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 // material
 import { styled } from '@mui/material/styles';
-import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
+import { Box, Link, Drawer, Typography, Avatar, Skeleton, Grid } from '@mui/material';
 // components
 import Logo from '../../components/Logo';
 import Scrollbar from '../../components/Scrollbar';
@@ -11,7 +12,6 @@ import NavSection from '../../components/NavSection';
 import { MHidden } from '../../components/@material-extend';
 //
 import sidebarConfig from './SidebarConfig';
-import account from '../../_mocks_/account';
 
 // ----------------------------------------------------------------------
 
@@ -42,6 +42,8 @@ DashboardSidebar.propTypes = {
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
 
+  const auth = useAuth0();
+  const { isLoading, isAuthenticated, user } = auth;
   useEffect(() => {
     if (isOpenSidebar) {
       onCloseSidebar();
@@ -62,63 +64,42 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         </Box>
       </Box>
 
-      <Box sx={{ mb: 5, mx: 2.5 }}>
-        <Link underline="none" component={RouterLink} to="#">
-          <AccountStyle>
-            <Avatar src={account.photoURL} alt="photoURL" />
-            <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
-              </Typography>
-            </Box>
-          </AccountStyle>
-        </Link>
-      </Box>
+      {isLoading && (
+        <Box sx={{ mb: 5, mx: 1 }}>
+          <Link underline="none" component={RouterLink} to="#">
+            <AccountStyle>
+              <Grid container spacing={1} direction="row" justifyContent="flex-start" alignItems="center">
+                <Grid item>
+                  <Skeleton variant="circular" width={40} height={40} />
+                </Grid>
+                <Grid item>
+                  <Skeleton variant="text" width={130} height={10} />
+                  <Skeleton variant="text" width={130} height={10} />
+                </Grid>
+              </Grid>
+            </AccountStyle>
+          </Link>
+        </Box>
+      )}
+      {isLoading === false && isAuthenticated && (
+        <Box sx={{ mb: 5, mx: 1 }}>
+          <Link underline="none" component={RouterLink} to="#">
+            <AccountStyle>
+              <Avatar src={user.picture} alt="photoURL" />
+              <Box sx={{ ml: 2 }}>
+                <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
+                  {user.given_name} {user.family_name}
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  {user.email}
+                </Typography>
+              </Box>
+            </AccountStyle>
+          </Link>
+        </Box>
+      )}
 
       <NavSection navConfig={sidebarConfig} />
-
-      <Box sx={{ flexGrow: 1 }} />
-
-      <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
-        <Stack
-          alignItems="center"
-          spacing={3}
-          sx={{
-            p: 2.5,
-            pt: 5,
-            borderRadius: 2,
-            position: 'relative',
-            bgcolor: 'grey.200'
-          }}
-        >
-          <Box
-            component="img"
-            src="/static/illustrations/illustration_avatar.png"
-            sx={{ width: 100, position: 'absolute', top: -50 }}
-          />
-
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography gutterBottom variant="h6">
-              Get more?
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              From only $69
-            </Typography>
-          </Box>
-
-          <Button
-            fullWidth
-            href="https://material-ui.com/store/items/minimal-dashboard/"
-            target="_blank"
-            variant="contained"
-          >
-            Upgrade to Pro
-          </Button>
-        </Stack>
-      </Box>
     </Scrollbar>
   );
 

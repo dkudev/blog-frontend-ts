@@ -4,13 +4,13 @@ import homeFill from '@iconify/icons-eva/home-fill';
 import personFill from '@iconify/icons-eva/person-fill';
 import settings2Fill from '@iconify/icons-eva/settings-2-fill';
 import { Link as RouterLink } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 // material
 import { alpha } from '@mui/material/styles';
 import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '@mui/material';
 // components
 import MenuPopover from '../../components/MenuPopover';
 //
-import account from '../../_mocks_/account';
 
 // ----------------------------------------------------------------------
 
@@ -38,6 +38,8 @@ export default function AccountPopover() {
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
 
+  const auth = useAuth0();
+  const { user, logout } = auth;
   const handleOpen = () => {
     setOpen(true);
   };
@@ -67,21 +69,16 @@ export default function AccountPopover() {
           })
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        <Avatar src={user && user.picture} alt="photoURL" />
       </IconButton>
 
-      <MenuPopover
-        open={open}
-        onClose={handleClose}
-        anchorEl={anchorRef.current}
-        sx={{ width: 220 }}
-      >
+      <MenuPopover open={open} onClose={handleClose} anchorEl={anchorRef.current} sx={{ width: 220 }}>
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            {account.displayName}
+            {user && user.given_name} {user && user.family_name}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {user && user.email}
           </Typography>
         </Box>
 
@@ -110,7 +107,12 @@ export default function AccountPopover() {
         ))}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
-          <Button fullWidth color="inherit" variant="outlined">
+          <Button
+            fullWidth
+            color="inherit"
+            variant="outlined"
+            onClick={() => logout({ returnTo: window.location.origin })}
+          >
             Logout
           </Button>
         </Box>
