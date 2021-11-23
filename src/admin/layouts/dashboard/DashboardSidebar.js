@@ -12,6 +12,7 @@ import NavSection from '../../components/NavSection';
 import { MHidden } from '../../components/@material-extend';
 //
 import sidebarConfig from './SidebarConfig';
+import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
 
 // ----------------------------------------------------------------------
 
@@ -94,6 +95,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
                   {user.email}
                 </Typography>
               </Box>
+              <VerifiedUserRoundedIcon color={user.email_verified ? 'primary' : 'disabled'} />
             </AccountStyle>
           </Link>
         </Box>
