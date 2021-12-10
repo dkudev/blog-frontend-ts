@@ -7,6 +7,7 @@ import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 // material
 import { alpha, useTheme, styled } from '@mui/material/styles';
 import { Box, List, Collapse, ListItemText, ListItemIcon, ListItemButton } from '@mui/material';
+import { useAuth0 } from '@auth0/auth0-react';
 
 // ----------------------------------------------------------------------
 
@@ -52,11 +53,15 @@ function NavItem({ item, active }) {
   const isActiveRoot = active(item.path);
   const { title, path, icon, info, children } = item;
   const [open, setOpen] = useState(isActiveRoot);
+  const { isAuthenticated } = useAuth0();
 
   const handleOpen = () => {
     setOpen((prev) => !prev);
   };
 
+  if (item.hasOwnProperty('isAuthenticationNeeded') && item.isAuthenticationNeeded !== isAuthenticated) {
+    return null;
+  }
   const activeRootStyle = {
     color: 'primary.main',
     fontWeight: 'fontWeightMedium',

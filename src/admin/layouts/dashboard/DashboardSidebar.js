@@ -87,15 +87,12 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           <Link underline="none" component={RouterLink} to="#">
             <AccountStyle>
               <Avatar src={user.picture} alt="photoURL" />
+              <VerifiedUserRoundedIcon color={user.email_verified ? 'primary' : 'disabled'} />
               <Box sx={{ ml: 2 }}>
                 <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
                   {user.given_name} {user.family_name}
                 </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {user.email}
-                </Typography>
               </Box>
-              <VerifiedUserRoundedIcon color={user.email_verified ? 'primary' : 'disabled'} />
             </AccountStyle>
           </Link>
         </Box>
