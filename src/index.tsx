@@ -1,12 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from "react-dom/client";
 import App from './admin/App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './context/Auth';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
-ReactDOM.render(
+const rootElement = document.getElementById("root");
+const rootComponent = createRoot(rootElement!);
+
+rootComponent.render(
   <React.StrictMode>
     <HelmetProvider>
       <BrowserRouter>
@@ -15,8 +18,7 @@ ReactDOM.render(
         </AuthProvider>
       </BrowserRouter>
     </HelmetProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
