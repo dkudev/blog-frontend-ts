@@ -7,6 +7,12 @@ import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
 const rootElement = document.getElementById("root");
+
+/**
+ * TS2345: Argument of type 'HTMLElement | null' is not assignable to parameter of type 'Element | DocumentFragment'.   Type 'null' is not assignable to type 'Element | DocumentFragment'.
+ * add ! after rootElement to become rootElement!
+ * to bypass the error
+ */
 const rootComponent = createRoot(rootElement!);
 
 rootComponent.render(
